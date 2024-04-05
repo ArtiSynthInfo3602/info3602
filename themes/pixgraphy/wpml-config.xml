@@ -1,0 +1,13 @@
+<wpml-config>
+	<admin-texts>
+		<key name="pixgraphy_theme_options">
+			<key name="pixgraphy_search_text" />
+			<key name="pixgraphy_tag_text" />
+			<key name="pixgraphy-img-upload-footer-image" />
+			<key name="pixgraphy-footer-title" />
+			<key name="pixgraphy-footer-link" />
+			<key name="pixgraphy_tag_text" />
+			<key name="pixgraphy_tag_text" />
+		</key>
+	</admin-texts>
+</wpml-config>
