@@ -1,0 +1,153 @@
+/*
+Theme Name:Pixgraphy Child
+Theme URI: http://themefreesia.com/themes/pixgraphy
+Author: Theme Freesia
+Author URI: http://themefreesia.com
+Description: Pixgraphy is a Responsive Photography WordPress Theme, Designed and Developed by Theme Freesia. This theme supports popular plugins like Breadcrumb NavXT, WP-PageNavi, Contact Form 7, Jetpack by WordPress.com, Polylang, bbPress, wooCommerce and many more. It is also translation ready and easily customizable with lots of options using Customizer. It consists contact us template, gallery template, widgets and sidebar. Get free support at http://themefreesia.com/support-forum/ and View demo site at http://demo.themefreesia.com/pixgraphy.
+Version: 1.0.2
+Text Domain: pixgraphy-child
+Template: pixgraphy
+License: GNU General Public License version 3.0
+License URI: http://www.gnu.org/licenses/gpl-3.0.html
+
+Tags: black, gray, white, threaded-comments, left-sidebar, right-sidebar, fixed-layout, fluid-layout, responsive-layout, custom-background, custom-header, custom-menu, editor-style, sticky-post, theme-options, translation-ready, post-formats
+
+All files, unless otherwise stated, are released under the GNU General Public License
+version 3.0 (http://www.gnu.org/licenses/gpl-3.0.html)
+==================================================
+*/
+
+/* Custom Pagination Styles */
+/* General styling for all page numbers */
+.page-numbers {
+    background-color: #f1f1f1; /* Light grey background */
+    color: #444; /* Dark grey text */
+    padding: 5px 10px;
+    margin: 2px;
+    text-decoration: none;
+    border-radius: 3px; /* Adds rounded corners */
+    font-weight: bold; /* Makes the text bold */
+}
+
+/* Styling for the current page number */
+.page-numbers.current {
+    background-color: #0073aa; /* WordPress blue */
+    color: white;
+    border-radius: 3px;
+}
+
+/* Styling for hover state */
+.page-numbers:hover {
+    background-color: #005077;
+    color: white;
+}
+
+/* Styling for the next and previous links */
+.page-numbers.prev, .page-numbers.next {
+    background-color: #eee; /* Slightly darker grey background */
+    border-radius: 3px;
+}
+/* Container for all artworks - making it a grid */
+.artworks-archive {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+    gap: 20px; /* Adjust the space between items */
+    margin-top: 20px;
+}
+
+/* Individual artwork entries */
+.artwork-entry {
+    border: 1px solid #ddd; /* Light border */
+    padding: 10px;
+    border-radius: 5px; /* Rounded corners */
+    transition: transform 0.2s; /* Smooth scaling on hover */
+}
+
+.artwork-entry:hover {
+    transform: scale(1.05); /* Slightly scale up on hover */
+    box-shadow: 0 4px 8px rgba(0,0,0,0.1); /* Soft shadow */
+}
+
+/* Artwork images */
+.artwork-entry img {
+    width: 100%; /* Make images full width */
+    height: auto;
+    border-radius: 5px; /* Rounded corners for images too */
+}
+
+/* Artwork titles */
+.artwork-entry h2 {
+    margin-top: 10px;
+    font-size: 20px; /* Larger titles */
+    text-align: center; /* Center the titles */
+}
+
+.artwork-entry h2 a {
+    color: #0073aa; /* Theme blue for links */
+    text-decoration: none; /* No underline */
+}
+
+.artwork-entry h2 a:hover {
+    text-decoration: underline; /* Underline on hover */
+}
+
+/* Custom Pagination Styles */
+.page-numbers {
+    padding: 8px 16px; /* Larger clickable area */
+    background-color: #0073aa; /* Theme blue */
+    color: #fff; /* White text */
+    border-radius: 4px; /* Rounded corners */
+    margin: 0 2px; /* Spacing between buttons */
+    text-decoration: none;
+    font-weight: bold;
+}
+
+.page-numbers:hover, .page-numbers.current {
+    background-color: #005a8d; /* Darker blue on hover/current */
+}
+
+/* Centering the pagination */
+.navigation.pagination {
+    display: flex;
+    justify-content: center; /* Center pagination container */
+    padding: 20px 0; /* Spacing around pagination */
+}
+
+
+.dashboard-container {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+    gap: 20px;
+    padding: 20px;
+}
+
+.dashboard-item {
+    background: #ffffff;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    border-radius: 8px;
+    padding: 20px;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.dashboard-item:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+}
+
+.dashboard-item h2 {
+    margin-top: 0;
+}
+
+.quick-link {
+    background-color: #007bff;
+    color: white;
+    padding: 10px 15px;
+    text-decoration: none;
+    border-radius: 5px;
+    display: inline-block;
+    margin-right: 10px;
+}
+
+.quick-link:hover {
+    background-color: #0056b3;
+}
