@@ -1,53 +1,78 @@
 <?php
-get_header(); // Include the header.
 
-$paged = (get_query_var('paged')) ? absint(get_query_var('paged')) : 1;
 
-$args = array(
-    'post_type' => 'artwork_submissions',
-    'posts_per_page' => 10,
-    'paged' => $paged,
-);
+get_header(); ?>
 
-// The Query
-$query = new WP_Query($args);
+<style>
+    .gallery-wrapper {
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: space-between;
+        margin: -15px; /* Negative margin to counteract padding */
+    }
 
-// Check if there are posts to display.
-if ($query->have_posts()) : 
+    .gallery-card {
+        flex: 0 0 calc(33.333% - 30px); /* Adjust as needed for spacing */
+        padding: 15px; /* Spacing between cards */
+        box-sizing: border-box;
+        transition: transform 0.3s ease-in-out;
+        border: 1px solid #ddd; /* Light border around each card */
+        border-radius: 5px; /* Rounded corners for the cards */
+    }
 
-    echo '<div class="artworks-archive">'; // A container for posts.
+    .gallery-card:hover {
+        transform: scale(1.05); /* Scale up slightly on hover */
+    }
 
-    // Start the Loop.
-    while ($query->have_posts()) : $query->the_post();
-        // This is where you display each post.
-        echo '<div class="artwork-entry">';
-        // Display the featured image if it exists.
-        if (has_post_thumbnail()) {
-            the_post_thumbnail('thumbnail');
-        }
-        // Display the title as a link to the single post.
-        echo '<h2><a href="' . esc_url(get_permalink()) . '">' . get_the_title() . '</a></h2>';
-        // Optionally, display the excerpt or full content.
-        the_content(); 
-        echo '</div>';
-    endwhile;
+    .gallery-thumbnail {
+        width: 100%;
+        height: auto;
+        border-radius: 5px; /* Rounded corners for the images */
+        overflow: hidden; /* Hide overflowing parts of the image */
+    }
 
-    // Pagination.
-    echo paginate_links(array(
-        'total' => $query->max_num_pages,
-        'mid_size'  => 2,
-        'prev_text' => __('Back', 'textdomain'),
-        'next_text' => __('Next', 'textdomain'),
-    ));
+    .gallery-title {
+        margin-top: 10px;
+        font-size: 18px;
+        font-weight: bold;
+    }
+</style>
 
-    echo '</div>'; // Close the .artworks-archive container.
+<div id="primary" class="content-area">
+    <main id="main" class="site-main">
+        <div class="gallery-wrapper">
 
-else : 
-    // If no posts are found, include the content-none.php template.
-    get_template_part('content', 'none');
-endif; 
+            <?php
+            // Custom query to fetch posts from the 'artwork_submissions' CPT
+            $artwork_submissions = new WP_Query(array(
+                'post_type' => 'artwork_submissions',
+                'posts_per_page' => -1, // Display all submissions
+            ));
 
-wp_reset_postdata(); // Always reset postdata after a custom WP_Query.
+            if ($artwork_submissions->have_posts()) {
+                while ($artwork_submissions->have_posts()) {
+                    $artwork_submissions->the_post(); ?>
+                    <div class="gallery-card">
+                        <article id="post-<?php the_ID(); ?>" <?php post_class(); ?>>
+                            <div class="entry-content clearfix">
+                                <?php
+                                if (has_post_thumbnail()) {
+                                    the_post_thumbnail('large', array('class' => 'gallery-thumbnail'));
+                                } ?>
+                                <h2 class="gallery-title"><a href="<?php the_permalink(); ?>"><?php the_title(); ?></a></h2>
+                                <?php the_excerpt(); ?>
+                            </div>
+                        </article>
+                    </div><!-- .gallery-card -->
+                <?php }
+                // Restore global post data
+                wp_reset_postdata();
+            } else { ?>
+                <h1 class="entry-title"> <?php esc_html_e('No Artwork Submissions Found.', 'pixgraphy'); ?> </h1>
+            <?php } ?>
+        </div><!-- .gallery-wrapper -->
+    </main><!-- #main -->
+</div><!-- #primary -->
 
-get_footer(); // Include the footer.
-?>
+<?php get_sidebar();
+get_footer(); ?>
