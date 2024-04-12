@@ -129,7 +129,7 @@ if ($the_query->have_posts()) {
             }
 
             echo '<p class="gallery-author">By: ' . get_the_author() . '</p>';
-            echo do_shortcode('[yasr_overall_rating]');  
+            echo do_shortcode('[yasr_visitor_votes]');  
             echo get_the_date('Y-m-d') . " ";
             echo  get_field('challenge_theme');
             echo '</div>'; // Close gallery-card
@@ -141,8 +141,8 @@ if ($the_query->have_posts()) {
 }
 wp_reset_postdata();
 
-echo '<h2>Weekly Winners Spotlight</h2>'; #filtering the post by category date and printing only 1 row is paywalled by this plugin
-echo do_shortcode('[yasr_ov_ranking rows="2"]');
+echo '<h2>Weekly Winners Spotlight</h2>'; #filtering the post by category, date and printing only 1 row is paywalled by this plugin
+echo do_shortcode('[yasr_most_or_highest_rated_posts rows="1"]');
 
 
 get_footer();
