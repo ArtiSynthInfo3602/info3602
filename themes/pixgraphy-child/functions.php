@@ -45,9 +45,12 @@ function register_weekly_challenges_cpt() {
         'public' => true,
         'label'  => 'Weekly Challenges',
         'supports' => array('title', 'editor', 'thumbnail', 'comments'),
-        // Assuming you want to allow comments for interaction
         'has_archive' => true,
         'menu_icon' => 'dashicons-calendar-alt',
+        //'capability_type' => 'event',
+        //'map_meta_cap' => true,
+        
+          
     );
     register_post_type('weekly_challenges', $args);
 }
@@ -56,10 +59,11 @@ add_action('init', 'register_weekly_challenges_cpt');
 
 function register_artwork_submissions_cpt() {
         $labels = array(
-            'new_item' => __('New Submission', 'text_domain'),
+            'new_item' => __('New Submission'),
   );
 
     $args = array(
+           'labels'             => $labels,
         'public' => true,
         'label'  => 'Artwork Submissions',
         'supports' => array('title', 'editor', 'thumbnail'),
@@ -67,6 +71,8 @@ function register_artwork_submissions_cpt() {
         'has_archive' => true,
         'menu_icon' => 'dashicons-art',
         'rewrite' => array('slug' => 'artwork-submissions', 'with_front' => false),
+        //'capability_type' => 'event',
+       // 'map_meta_cap' => true,
 
 
     );
@@ -123,23 +129,100 @@ function handle_weekly_challenge_submission() {
     }
 }
 
-function get_weekly_themes() {
-    return [
-        'Theme 1',
-        'Theme 2',
-        'Theme 3',
-        // Add as many themes as you like.
-    ];
+// Add a menu item in the WordPress dashboard
+function weekly_theme_settings_menu() {
+    add_menu_page(
+        'Weekly Theme Settings',  // Page title
+        'Weekly Theme',  // Menu title
+        'manage_options',  // Capability required to access the menu item
+        'weekly-theme-settings',  // Menu slug
+        'render_weekly_theme_settings_page'  // Callback function to render the page
+    );
+}
+add_action('admin_menu', 'weekly_theme_settings_menu');
+
+// Render the weekly theme settings page
+function render_weekly_theme_settings_page() {
+    // Check if the current user can manage options (administrator or moderator)
+    if (!current_user_can('manage_options')) {
+        return;
+    }
+
+    // Handle form submissions
+    if (isset($_POST['weekly_theme'])) {
+        // Sanitize and save the modified value
+        $weekly_theme = sanitize_text_field($_POST['weekly_theme']);
+        set_weekly_theme($weekly_theme); // Set the weekly theme using the set_weekly_theme function
+        echo '<div class="updated"><p>Weekly theme updated successfully!</p></div>';
+
+        // DEBUG: Output the theme set
+        echo '<div class="debug"><p>Theme set to: ' . esc_html($weekly_theme) . '</p></div>';
+    }
+
+    // Retrieve the current weekly theme from options
+    $current_weekly_theme = get_current_week_theme();
+
+    // DEBUG: Output the current weekly theme
+    echo '<div class="debug"><p>Current theme: ' . esc_html($current_weekly_theme) . '</p></div>';
+
+    // Render the form
+    ?>
+    <div class="wrap">
+        <h1>Weekly Theme Settings</h1>
+        <form method="post" action="">
+            <label for="weekly_theme">Weekly Theme:</label><br>
+            <input type="text" id="weekly_theme" name="weekly_theme" value="<?php echo esc_attr($current_weekly_theme); ?>"><br><br>
+            <input type="submit" class="button-primary" value="Save">
+        </form>
+    </div>
+    <?php
 }
 
 
+// Modify the set_weekly_theme function to save the selected theme to the database
+function set_weekly_theme($theme) {
+    // Sanitize the theme value
+    $theme = sanitize_text_field($theme);
+    // Set the theme in the WordPress options table
+    update_option('weekly_theme', $theme);
+}
+
+// Modify the get_current_week_theme function to retrieve the theme from the database
 function get_current_week_theme() {
+    // Retrieve the current weekly theme from options
+    $theme = get_option('weekly_theme');
+
+    // If the theme is set in the options, return it
+    if (!empty($theme)) {
+        return $theme;
+    }
+
+    // If the theme is not set, calculate it based on the current date
     $themes = get_weekly_themes();
     $start_date = new DateTime('2023-01-01'); // The start date of the first theme
     $current_date = new DateTime();
     $week_number = intval($start_date->diff($current_date)->days / 7) % count($themes);
     return $themes[$week_number];
 }
+
+// function get_weekly_themes() {
+//     return [
+//         'Theme 1',
+//         'Theme 2',
+//         'Theme 3',
+//         // Add as many themes as you like.
+//     ];
+// }
+
+
+// function get_current_week_theme() {
+//     $themes = get_weekly_themes();
+//     $start_date = new DateTime('2023-01-01'); // The start date of the first theme
+//     $current_date = new DateTime();
+//     $week_number = intval($start_date->diff($current_date)->days / 7) % count($themes);
+//     return $themes[$week_number];
+// }
+
 
 function set_post_challenge_theme($post_id) {
     // Check if it's the correct post type to avoid affecting other post types
@@ -162,6 +245,8 @@ function create_artist_cpt() {
         'label'  => 'Artists',
         'supports' => array('title', 'editor', 'thumbnail'),
         'menu_icon' => 'dashicons-admin-users',
+      //  'capability_type' => 'event',
+       // 'map_meta_cap' => true,
     );
     register_post_type('artists', $args);
 }
